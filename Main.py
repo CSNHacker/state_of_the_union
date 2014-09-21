@@ -16,7 +16,8 @@ with open('state-of-the-union.csv','rb') as csvfile:
 	num_of_doc = 0
 	term_frequency=[]
 	document_term_frequency=[]
-	document_frequency= Set()
+	document_frequency= []
+	d_f=[]
 
 	word_tfidf=[]
 	document_tfidf=[]
@@ -45,20 +46,20 @@ with open('state-of-the-union.csv','rb') as csvfile:
 		#Finding the Term Frequency of each word in each document
 
 		for list in document_list:
-			for word in list.words:
-				term_frequency.append([word,calculate_term_frequency(word,list)])
-			document_term_frequency.append(term_frequency)
-			term_frequency=[]
+				term_frequency.append(calculate_term_frequency(list.words))
 
 	#Finding the Document Frequency of each word
 	for list in document_list:
 		for word in list.words:
-			document_frequency.add(calculate_document_frequency(word, document_list,num_of_doc))
+			if word in document_frequency:
+				continue
+			else:
+				document_frequency.append([word,calculate_document_frequency(word, document_list,num_of_doc,d_f)])
 
 	print document_frequency
 
-	#Calculating tfidf
-	for list in document_term_frequency:
-		for word,count in list:
-			word_tfdif.append([word,calculate_tfidf(word,list,count, document_frequency)])
-	document_tfidf.append(word_tfidf)
+	# #Calculating tfidf
+	# for list in document_term_frequency:
+	# 	for word,count in list:
+	# 		word_tfdif.append([word,calculate_tfidf(word,count,document_frequency)])
+	# document_tfidf.append(word_tfidf)

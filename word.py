@@ -1,4 +1,5 @@
 from collections import Counter
+import math
 
 class word(object):
 	def __init__(self, string):
@@ -11,24 +12,25 @@ class Document(object):
 		self.words = words
 
 def make_document(id, year, words):
-    document1 = Document(id, year, words)
-    return document1
+	document1 = Document(id, year, words)
+	return document1
 
-def calculate_term_frequency(document):
-	count = Counter(document)
+def calculate_term_frequency(doc):
+	count = Counter(doc)
 	return count
 
-def calculate_document_frequency(word,Document_list,num_of_doc):
-	count =0
-	for list in Document_list:
-		if word in list.words:
-			count+=1
-	return math.log10(num_of_doc/count)
+def calculate_document_frequency(word,Document_list,num_of_doc,document_word):
+	count=0
+	if word not in document_word:
+		count = sum(1 for list in Document_list if word in list.words)
+		val = '{0:.3f}'.format(math.log(num_of_doc/count))
+		return val
+	else:
+		return "-1"	
 
 def calculate_tfidf(word,count,document_frequency):
 	value = document_frequency.get(word)
-	tfidf = value*count
+	tfidf = value *count
 	return tfidf
-
 
 
